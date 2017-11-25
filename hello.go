@@ -2,13 +2,13 @@
 
 package main
 
-import (
-  "fmt"
-  // "net"
-  "os"
-)
-
-func main(){
-  fmt.Println("hello world!")
-  os.Exit(0)
-}
+// import (
+//   "fmt"
+//   // "net"
+//   "os"
+// )
+//
+// func main(){
+//   fmt.Println("hello world!")
+//   os.Exit(0)
+// }
