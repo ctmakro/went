@@ -2,6 +2,7 @@ package main
 
 import (
   "net"
+  "golang.org/x/net/context"
   "github.com/armon/go-socks5"
 )
 
@@ -12,7 +13,16 @@ var LocalHost = "127.0.0.1"
 
 func initSocks5Server(){
   // Create a SOCKS5 server
+
+  // dial function modified from src of github/armon/go-socks5
+  var dialfunc = func(ctx context.Context, net_, addr string) (net.Conn, error) {
+    print("[socks5] dialing", addr, "...")
+		return net.Dial(net_, addr)
+	}
+
   conf := &socks5.Config{}
+  conf.Dial = dialfunc
+
   server, err := socks5.New(conf)
   if err != nil {
     panic(err)
