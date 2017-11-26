@@ -34,8 +34,11 @@ func DirectionalPipe(r net.Conn, w net.Conn){
 
 // reverse every byte of the buffer (operate on the buffer directly)
 func reverseBytes(buf *[]byte) {
-  for i:=0; i<len(*buf); i++{
-    (*buf)[i] = byte(255) - (*buf)[i]
+  // for i:=0; i<len(*buf); i++{
+  //   (*buf)[i] = byte(255) - (*buf)[i]
+  // }
+  for i:= range *buf{
+    (*buf)[i] = byte(255) - (*buf)[i]  
   }
 }
 
