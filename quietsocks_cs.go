@@ -32,7 +32,7 @@ func CreateTransparentTunnel(fromPort int, toAddr string, toPort int){
     idCounter++
 
     var remoteAddr = incoming.RemoteAddr().String()
-    print(idstr, "Accepted connection from", remoteAddr)
+    // print(idstr, "Accepted connection from", remoteAddr)
 
     // 2. for each incoming connection
     // dial the destination:
@@ -43,6 +43,7 @@ func CreateTransparentTunnel(fromPort int, toAddr string, toPort int){
       return // do not execute further
     }
 
+    print(idstr, "accept from", remoteAddr, "to", outgoing.RemoteAddr().String())
     var ch1,ch2 = make(chan string), make(chan string) // pass something to em
 
     // 3. pipe two into each other, reversing the bytes
