@@ -33,7 +33,8 @@ func QSmain(){
   if dest=="not specified" {
     // user did not specify the connect flag
     // start in server mode
-    print("server code not implemented yet...")
+    // print("server code not implemented yet...")
+    QuietsocksServerInit()
   }else{
     // start in client mode
     QuietsocksClientInit(dest)
