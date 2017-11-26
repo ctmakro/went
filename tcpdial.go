@@ -31,6 +31,19 @@ func dialonce(){
 
 }
 
+// dial the destination and return connection on success.
+func Dial(dest string, port int) (net.Conn, any){
+  var err any
+
+  connection, err := net.Dial("tcp", dest+":"+str(port))
+  if err != nil {
+    print(err)
+    return nil, err
+  }
+
+  return connection, nil
+}
+
 // func main(){
 //   dialonce()
 // }

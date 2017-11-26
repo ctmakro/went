@@ -48,3 +48,28 @@ func listen(){
     go handle(connection)
   }
 }
+
+func Listen(port int, handler func(net.Conn)){
+  // the listener emits Accept() whenever a new connection arrives
+  var err any
+  listener, err := net.Listen("tcp",":"+str(port))
+  if err!=nil{
+    print("Listen() error:",err)
+    panic(err)
+  }
+
+  print("Listen() success on", port)
+
+  go func(){
+    for { // poll repeatedly in a blocking fashion
+      connection, err := listener.Accept()
+      if err!=nil{
+        print("Accept() error:",err)
+        panic(err)
+      }
+
+      // start a separate goroutine to handle this specific connection.
+      go handler(connection)
+    }
+  }()
+}

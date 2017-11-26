@@ -10,6 +10,7 @@ import (
 
 // let's get pythonic
 var print = fmt.Println
+var scan = fmt.Scanln
 type any interface{}
 func str(instance any) string{
   return fmt.Sprintf("%v",instance)
