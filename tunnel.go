@@ -38,13 +38,13 @@ func reverseBytes(buf *[]byte) {
   //   (*buf)[i] = byte(255) - (*buf)[i]
   // }
   for i:= range *buf{
-    (*buf)[i] = byte(255) - (*buf)[i]  
+    (*buf)[i] = byte(255) - (*buf)[i]
   }
 }
 
 func DirectionalPipeWithReversedBytes(r net.Conn, w net.Conn, c chan string){
   var idstr = <- c
-  var rbuf = make([]byte, 16384)
+  var rbuf = make([]byte, 4096)
   for {
     n,err := r.Read(rbuf)
     if err!=nil {
