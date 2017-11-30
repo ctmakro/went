@@ -6,8 +6,8 @@ package main
 // }
 import (
   // "strings"
-  "bufio"
-  "os"
+  // "bufio"
+  // "os"
 )
 
 func main_listen(){
@@ -24,38 +24,44 @@ func main_dial(){
 
 func main_tunnel(){
   TunnelSetup()
-  WaitForString("e")
+  // WaitForString("e")
 }
 
-var stdin *bufio.Reader
-func InitReader() {
-  stdin = bufio.NewReader(os.Stdin)
-}
+// var stdin *bufio.Reader
+// func InitReader() {
+//   stdin = bufio.NewReader(os.Stdin)
+// }
+//
+// func ReadLine()(string, error){
+//   s,err := stdin.ReadString('\n')
+//   if err!=nil{
+//     return "",err
+//   }else{
+//     return s[:len(s)-2],nil
+//   }
+// }
 
-func ReadLine()(string, error){
-  s,err := stdin.ReadString('\n')
-  if err!=nil{
-    return "",err
-  }else{
-    return s[:len(s)-2],nil
-  }
-}
+// func WaitForString(str string){
+//   for{
+//     print("Enter \""+str+"\" to break")
+//     s, err := ReadLine()
+//     if err!=nil{
+//       print(err)
+//     }
+//     if s == str {
+//       break
+//     }
+//   }
+// }
 
-func WaitForString(str string){
+func WaitForever(){
   for{
-    print("Enter \""+str+"\" to break")
-    s, err := ReadLine()
-    if err!=nil{
-      print(err)
-    }
-    if s == str {
-      break
-    }
+    sleep(1.)
   }
 }
 
 func QSmain(){
-  InitReader()
+  // InitReader()
   //0. obtain destination server from cli args
   var dest = GetConnectionDestinationFromCli()
   if dest=="not specified" {
@@ -68,7 +74,8 @@ func QSmain(){
     QuietsocksClientInit(dest)
   }
 
-  WaitForString("e")
+  WaitForever()
+  // WaitForString("e")
 }
 
 func main(){
