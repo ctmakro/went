@@ -37,7 +37,7 @@ func main_tunnel(){
 //   if err!=nil{
 //     return "",err
 //   }else{
-//     return s[:len(s)-2],nil
+//     return s[:len(s)-1],nil
 //   }
 // }
 
