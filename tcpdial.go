@@ -63,7 +63,7 @@ func DialWithHttpHeader(dest string, port int) (net.Conn, any){
   readed, err2 := ReadTillCrLf(conn)
   if err2!=nil {
     print("error on RTCL():",err2)
-    return nil,err
+    return nil,err2
   }
   // print("(DWHH)readed", string(readed))
   _,_ = readed,n
