@@ -7,7 +7,7 @@ import (
 )
 
 var QsClientPort = 8118
-var QsServerPort = 80 //8338
+var QsServerPort = 8338
 // changed to 80, let's see if the performance gets any better.
 var QsSocksPort = 8228 // must not be occupied on server
 var LocalHost = "127.0.0.1"
