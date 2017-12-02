@@ -6,6 +6,7 @@ import (
   "fmt"
   "time"
   "io"
+  "errors"
 )
 
 // let's get pythonic
@@ -32,18 +33,27 @@ func ReadTillCrLf(c net.Conn) ([]byte, any){
     }
 
     // if no error met, meaning we read something from the socket.
-    print("read",n,"bytes from socket...")
+    // print("(RTCL)read",n,"bytes from socket...")
 
     bigbuf = append(bigbuf,rbuf[:n]...) //append rbuf[0:n] to buf
 
-    // if last four byte is /r/n/r/n, we reached the end of http request.
-    if reflect.DeepEqual(bigbuf[len(bigbuf)-4:], []byte("\r\n\r\n")){
-      print("request ended")
-      // print(string(bigbuf))
-      // break
-      return bigbuf, nil
+    if n==3 {
+      print("(RTCL) n3", bigbuf)
     }
 
+    // if last four byte is /r/n/r/n, we reached the end of http request.
+    if len(bigbuf)>4{
+      if reflect.DeepEqual(bigbuf[len(bigbuf)-4:], []byte("\r\n\r\n")){
+        // print("(RTCL)request ended")
+        // print(string(bigbuf))
+        // break
+        return bigbuf, nil
+      }
+    }
+
+    if len(bigbuf)>4096{
+      return nil, errors.New("no 2xCrLf met in 4096 bytes")
+    }
   }
 }
 

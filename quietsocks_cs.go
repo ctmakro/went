@@ -35,9 +35,9 @@ func initSocks5Server(){
 }
 
 var idCounter = 0
-func CreateTransparentTunnel(fromPort int, toAddr string, toPort int){
-  //1. listen to a port
-  Listen(fromPort, func(incoming net.Conn){
+func CreateTransparentTunnel(fromPort int, toAddr string, toPort int, asServer bool){
+  // define handler
+  var handler = func(incoming net.Conn){
     var idstr = "[" + str(idCounter) + "]"
     idCounter++
 
@@ -46,7 +46,14 @@ func CreateTransparentTunnel(fromPort int, toAddr string, toPort int){
 
     // 2. for each incoming connection
     // dial the destination:
-    var outgoing, err = Dial(toAddr,toPort)
+    var outgoing net.Conn
+    var err any
+    if asServer {
+      outgoing, err = Dial(toAddr,toPort)
+    } else {
+      outgoing, err = DialWithHttpHeader(toAddr,toPort)
+    }
+
     if err!=nil {
       print(idstr, "outgoing dial err:",err)
       incoming.Close()
@@ -69,14 +76,26 @@ func CreateTransparentTunnel(fromPort int, toAddr string, toPort int){
     <- ch2
 
     print(idstr, "both connection should have ended")
-  })
+  }
+
+  //1. listen to a port
+  // Listen(fromPort, func(incoming net.Conn){
+  if asServer{
+    // skip http header in incoming connection
+    ListenSkipHTTPHeader(fromPort, handler)
+  }else{
+    // listen as is
+    Listen(fromPort, handler)
+  }
+
+
 }
 
 func QuietsocksServerInit(){
   go initSocks5Server()
   print("Socks5 listening on port",QsSocksPort)
 
-  CreateTransparentTunnel(QsServerPort,"127.0.0.1",QsSocksPort)
+  CreateTransparentTunnel(QsServerPort,"127.0.0.1",QsSocksPort, true)
 
   // listen successful
   print("Please connect with quietsocks client to this-machine:" + str(QsServerPort))
@@ -86,7 +105,7 @@ func QuietsocksClientInit(dest string){ // dest: destination server addr
   // run as a client of the quietsocks protocol.
   print("destination specified:", dest)
 
-  CreateTransparentTunnel(QsClientPort,dest,QsServerPort)
+  CreateTransparentTunnel(QsClientPort,dest,QsServerPort, false)
 
   // listen successful
   print("Please set the SOCKS5 proxy of your browser to 127.0.0.1:"+str(QsClientPort))

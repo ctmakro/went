@@ -73,3 +73,31 @@ func Listen(port int, handler func(net.Conn)){
     }
   }()
 }
+
+func ListenSkipHTTPHeader(port int, handler func(net.Conn)){
+  // print("(resh)", HTTPResponseHeader)
+
+  Listen(port, func(c net.Conn){
+    // perform fake HTTP handshake before handling with handler
+
+    // skip the http request header first
+    readed, err := ReadTillCrLf(c)
+    if err!=nil {
+      print("error on RTCL():",err)
+      // return nil,err
+    }
+    // print("(LSHH)readed",string(readed))
+
+    // now respond with http response header
+    n, err1 := c.Write([]byte(HTTPResponseHeader))
+    if err1!=nil{
+      print("error on header Write()")
+      // return nil,err1
+    }
+    // print("(LSHH)n",n)
+    _,_ = readed,n
+
+    // now use the specified handler.
+    handler(c)
+  })
+}
