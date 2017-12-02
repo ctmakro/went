@@ -52,7 +52,8 @@ func CreateTransparentTunnel(fromPort int, toAddr string, toPort int, asServer b
     if asServer {
       outgoing, err = Dial(toAddr,toPort)
     } else {
-      outgoing, err = DialWithHttpHeader(toAddr,toPort)
+      // outgoing, err = DialWithHttpHeader(toAddr,toPort)
+      outgoing, err = Dial(toAddr,toPort)
     }
 
     if err!=nil {
@@ -81,9 +82,10 @@ func CreateTransparentTunnel(fromPort int, toAddr string, toPort int, asServer b
 
   //1. listen to a port
   // Listen(fromPort, func(incoming net.Conn){
-  if asServer{
+  if asServer {
     // skip http header in incoming connection
-    ListenSkipHTTPHeader(fromPort, handler)
+    // ListenSkipHTTPHeader(fromPort, handler)
+    Listen(fromPort, handler)
   }else{
     // listen as is
     Listen(fromPort, handler)
